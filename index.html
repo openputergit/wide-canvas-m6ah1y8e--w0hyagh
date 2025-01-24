@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MegaMart - Your Universal Shopping Destination</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+        .submenu {
+            display: none;
+            position: absolute;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            z-index: 100;
+            border-radius: 4px;
+        }
+        .nav-item:hover .submenu {
+            display: block;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            transition: transform 0.3s ease;
+        }
+        .carousel {
+            overflow: hidden;
+            position: relative;
+        }
+        .carousel-inner {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        .carousel-slide {
+            flex: 0 0 100%;
+        }
+        #searchResults {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .loading {
+            position: fixed;
+            inset: 0;
+            background: rgba(255,255,255,0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Loading Animation -->
+    <div id="loadingScreen" class="loading fade-in">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-blue-600 text-white p-4">
+        <div class="container mx-auto flex items-center justify-between">
+            <h1 class="text-2xl font-bold cursor-pointer">MegaMart</h1>
+            
+            <!-- Search -->
+            <div class="relative flex-1 mx-8">
+                <input type="text" id="search" placeholder="Search products..." class="w-full p-2 rounded text-gray-800">
+                <div id="searchResults" class="absolute w-full bg-white mt-1 rounded shadow-lg z-50 hidden"></div>
+            </div>
+            
+            <!-- Account & Cart -->
+            <div class="flex items-center space-x-4">
+                <button id="loginBtn" class="flex items-center hover:text-gray-200">
+                    <i class="bi bi-person text-xl"></i>
+                    <span class="ml-1">Sign In</span>
+                </button>
+                <button id="cartBtn" class="flex items-center hover:text-gray-200 relative">
+                    <i class="bi bi-cart text-xl"></i>
+                    <span id="cartCount" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="bg-gray-800 text-white sticky top-0 z-50">
+        <div class="container mx-auto">
+            <ul class="flex flex-wrap">
+                <li class="nav-item p-4 hover:bg-gray-700 cursor-pointer relative group">
+                    All Categories
+                    <div class="submenu w-48">
+                        <a href="#" class="block p-3 text-gray-800 hover:bg-gray-100">Electronics</a>
+                        <a href="#" class="block p-3 text-gray-800 hover:bg-gray-100">Fashion</a>
+                        <a href="#" class="block p-3 text-gray-800 hover:bg-gray-100">Home & Kitchen</a>
+                        <a href="#" class="block p-3 text-gray-800 hover:bg-gray-100">Books</a>
+                        <a href="#" class="block p-3 text-gray-800 hover:bg-gray-100">Sports</a>
+                        <a href="#" class="block p-3 text-gray-800 hover:bg-gray-100">Toys</a>
+                    </div>
+                </li>
+                <!-- Other nav items... -->
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-4">
+        <!-- Carousel -->
+        <div class="carousel mb-8 rounded-lg overflow-hidden shadow-lg">
+            <div class="carousel-inner">
+                <div class="carousel-slide">
+                    <img src="https://source.unsplash.com/random/1200x400/?shopping" alt="Promo 1" class="w-full h-64 object-cover">
+                </div>
+                <!-- More slides... -->
+            </div>
+        </div>
+
+        <!-- Flash Deals -->
+        <div class="bg-white p-4 rounded-lg shadow-lg mb-8">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-red-600">⚡ Flash Deals</h2>
+                <div class="text-lg font-semibold" id="dealTimer">Ends in: 12:30:45</div>
+            </div>
+            <!-- Deal products grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <!-- Product cards... -->
+            </div>
+        </div>
+
+        <!-- Categories Showcase -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <div class="bg-white p-4 rounded-lg shadow hover:shadow-xl transition-shadow">
+                <h3 class="font-bold text-lg mb-2">Fashion</h3>
+                <div class="grid grid-cols-2 gap-2">
+                    <img src="https://source.unsplash.com/random/150x150/?fashion" alt="Fashion" class="rounded">
+                    <!-- More category images... -->
+                </div>
+            </div>
+            <!-- More category showcases... -->
+        </div>
+    </main>
+
+    <!-- Checkout Modal -->
+    <div id="checkoutModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
+        <div class="bg-white p-8 rounded-lg w-96 max-w-full m-4">
+            <h2 class="text-2xl font-bold mb-4">Checkout</h2>
+            <!-- Checkout form -->
+            <form id="checkoutForm" class="space-y-4">
+                <!-- Form fields... -->
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Remove loading screen after content loads
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loadingScreen').style.display = 'none';
+            }, 1000);
+        });
+
+        // Product database with more items
+        const products = new Map([
+            ['smartphone', { name: 'Latest Smartphone', price: 699.99, stock: 5, priority: 2 }],
+            ['laptop', { name: 'Premium Laptop', price: 1299.99, stock: 3, priority: 3 }],
+            ['headphones', { name: 'Wireless Headphones', price: 199.99, stock: 10, priority: 1 }],
+            ['watch', { name: 'Smart Watch', price: 299.99, stock: 7, priority: 1 }],
+            // More products...
+        ]);
+
+        // Cart functionality
+        let cart = [];
+
+        function addToCart(product) {
+            if (product.stock > 0) {
+                cart.push(product);
+                product.stock--;
+                updateCartCount();
+                showNotification(`Added ${product.name} to cart!`);
+            } else {
+                showNotification('Sorry, this item is out of stock!', 'error');
+            }
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 p-4 rounded-lg ${
+                type === 'success' ? 'bg-green-500' : 'bg-red-500'
+            } text-white`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add your initialization code here
+        });
+
+        // Add more event listeners and functionality as needed
+    </script>
+<script>document.body.addEventListener('wheel', e => { if (!e.ctrlKey) return; e.preventDefault(); return }, { passive: false })</script>
+	</body>
+</html>
